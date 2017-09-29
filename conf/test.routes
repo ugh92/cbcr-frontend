@@ -1,0 +1,1 @@
+GET   /insertSubscription/:cbcId/:utr                      @uk.gov.hmrc.cbcrfrontend.controllers.test.SubscriptionControllerTEST.insertSubscriptionData(cbcId: String, utr: String)
