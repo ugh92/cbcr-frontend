@@ -18,15 +18,13 @@ package uk.gov.hmrc.cbcrfrontend.controllers.test
 
 import javax.inject.{Inject, Singleton}
 
-import uk.gov.hmrc.cbcrfrontend.connectors.test.TestRegistrationConnector
-import uk.gov.hmrc.cbcrfrontend.auth.SecuredActions
-import uk.gov.hmrc.play.frontend.controller.FrontendController
-import uk.gov.hmrc.play.config.ServicesConfig
-import uk.gov.hmrc.cbcrfrontend.model._
-import uk.gov.hmrc.cbcrfrontend.connectors.test.TestCBCRConnector
 import play.api.Logger
-import scala.util.control.NonFatal
 import play.api.libs.json._
+import uk.gov.hmrc.cbcrfrontend.auth.SecuredActions
+import uk.gov.hmrc.cbcrfrontend.connectors.test.TestCBCRConnector
+import uk.gov.hmrc.cbcrfrontend.model._
+import uk.gov.hmrc.play.config.ServicesConfig
+import uk.gov.hmrc.play.frontend.controller.FrontendController
 
 @Singleton
 class SubscriptionControllerTEST @Inject()(val sec: SecuredActions) extends FrontendController with ServicesConfig {
@@ -34,9 +32,9 @@ class SubscriptionControllerTEST @Inject()(val sec: SecuredActions) extends Fron
   def insertSubscriptionData(cbcId: String, utr: String) = sec.AsyncAuthenticatedAction(Some(Organisation)) { authContext =>
     implicit request =>
       Logger.debug("some message ")
-      (for {
+      for {
         _ <- TestCBCRConnector.insertSubscriptionData(defaultSubscriptionData(cbcId, utr))
-      } yield Ok("Data inserted"))
+      } yield Ok("Data inserted")
   }
 
   def defaultSubscriptionData(cbcId: String, utr: String): JsValue =

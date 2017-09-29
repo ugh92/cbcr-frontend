@@ -16,13 +16,10 @@
 
 package uk.gov.hmrc.cbcrfrontend.connectors.test
 
-import java.net.URL
-import javax.inject.Inject
-
+import play.api.libs.json.JsValue
 import uk.gov.hmrc.cbcrfrontend.WSHttp
 import uk.gov.hmrc.play.config.ServicesConfig
 import uk.gov.hmrc.play.http._
-import play.api.libs.json.{JsValue, Json}
 
 import scala.concurrent.Future
 
@@ -33,16 +30,10 @@ trait TestRegistrationConnector {
 
 object TestCBCRConnector extends TestRegistrationConnector with ServicesConfig{
 
-//  val conf = config.underlying.get[Config]("microservice.services.cbcr").value
-//
-//  val url: String = (for {
-//    proto <- conf.get[String]("protocol")
-//    host <- conf.get[String]("host")
-//    port <- conf.get[Int]("port")
-//  } yield s"$proto://$host:$port/cbcr").value
+  val cbcrUrl = baseUrl("cbcr")
 
   def insertSubscriptionData(jsonData: JsValue)(implicit hc: HeaderCarrier) : Future[HttpResponse] = {
-    WSHttp.POST[JsValue, HttpResponse](s"http://localhost:9797/cbcr/test-only/insertSubscriptionData", jsonData)
+    WSHttp.POST[JsValue, HttpResponse](s"$cbcrUrl/cbcr/test-only/insertSubscriptionData", jsonData)
   }
 }
 
