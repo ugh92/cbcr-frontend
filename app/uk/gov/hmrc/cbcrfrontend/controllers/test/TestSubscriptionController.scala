@@ -27,11 +27,10 @@ import uk.gov.hmrc.play.config.ServicesConfig
 import uk.gov.hmrc.play.frontend.controller.FrontendController
 
 @Singleton
-class SubscriptionControllerTEST @Inject()(val sec: SecuredActions) extends FrontendController with ServicesConfig {
+class TestSubscriptionController @Inject()(val sec: SecuredActions) extends FrontendController with ServicesConfig {
 
   def insertSubscriptionData(cbcId: String, utr: String) = sec.AsyncAuthenticatedAction(Some(Organisation)) { authContext =>
     implicit request =>
-      Logger.debug("some message ")
       for {
         _ <- TestCBCRConnector.insertSubscriptionData(defaultSubscriptionData(cbcId, utr))
       } yield Ok("Data inserted")
@@ -66,4 +65,13 @@ class SubscriptionControllerTEST @Inject()(val sec: SecuredActions) extends Fron
          |}
        """.stripMargin
     )
+
+  def deleteSubscription(utr: String) = sec.AsyncAuthenticatedAction(Some(Organisation)) { authContext =>
+    implicit request =>
+      for {
+        _ <- TestCBCRConnector.deleteSubscription(utr)
+      } yield Ok("Record with the specific UTR deleted")
+  }
+
+
 }

@@ -25,15 +25,22 @@ import scala.concurrent.Future
 
 trait TestRegistrationConnector {
   def insertSubscriptionData(jsonData: JsValue)(implicit hc: HeaderCarrier) : Future[HttpResponse]
+
+  def deleteSubscription(utr: String)(implicit hc: HeaderCarrier) : Future[HttpResponse]
 }
 
 
 object TestCBCRConnector extends TestRegistrationConnector with ServicesConfig{
 
   val cbcrUrl = baseUrl("cbcr")
+  val http = WSHttp
 
   def insertSubscriptionData(jsonData: JsValue)(implicit hc: HeaderCarrier) : Future[HttpResponse] = {
-    WSHttp.POST[JsValue, HttpResponse](s"$cbcrUrl/cbcr/test-only/insertSubscriptionData", jsonData)
+    http.POST[JsValue, HttpResponse](s"$cbcrUrl/cbcr/test-only/insertSubscriptionData", jsonData)
+  }
+
+  def deleteSubscription(utr: String)(implicit hc: HeaderCarrier) : Future[HttpResponse] = {
+    http.GET[HttpResponse](s"$cbcrUrl/cbcr/test-only/deleteSubscription/$utr")
   }
 }
 
