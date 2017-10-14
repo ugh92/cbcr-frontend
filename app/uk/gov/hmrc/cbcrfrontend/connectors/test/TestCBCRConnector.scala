@@ -40,7 +40,11 @@ object TestCBCRConnector extends TestRegistrationConnector with ServicesConfig{
   }
 
   def deleteSubscription(utr: String)(implicit hc: HeaderCarrier) : Future[HttpResponse] = {
-    http.GET[HttpResponse](s"$cbcrUrl/cbcr/test-only/deleteSubscription/$utr")
+    http.DELETE[HttpResponse](s"$cbcrUrl/cbcr/test-only/deleteSubscription/$utr")
+  }
+
+  def deleteSingleDocRefId(docRefId: String)(implicit hc: HeaderCarrier) : Future[HttpResponse] = {
+    http.DELETE[HttpResponse](s"$cbcrUrl/cbcr/test-only/deleteDocRefId/$docRefId")
   }
 }
 

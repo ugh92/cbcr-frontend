@@ -27,7 +27,7 @@ import uk.gov.hmrc.play.config.ServicesConfig
 import uk.gov.hmrc.play.frontend.controller.FrontendController
 
 @Singleton
-class TestSubscriptionController @Inject()(val sec: SecuredActions) extends FrontendController with ServicesConfig {
+class TestCBCRController @Inject()(val sec: SecuredActions) extends FrontendController with ServicesConfig {
 
   def insertSubscriptionData(cbcId: String, utr: String) = sec.AsyncAuthenticatedAction(Some(Organisation)) { authContext =>
     implicit request =>
@@ -73,5 +73,11 @@ class TestSubscriptionController @Inject()(val sec: SecuredActions) extends Fron
       } yield Ok("Record with the specific UTR deleted")
   }
 
+  def deleteSingleDocRefId(docRefId: String) = sec.AsyncAuthenticatedAction(Some(Organisation)) { authContext =>
+    implicit request =>
+    for {
+      _ <- TestCBCRConnector.deleteSingleDocRefId(docRefId)
+    } yield Ok("DocRefId has been deleted")
+  }
 
 }
